@@ -6,6 +6,7 @@ import passport from "passport";
 import authRoutes from "./routes/auth.routes";
 import specialRoutes from "./routes/special.routes";
 import zoneRoutes from "./routes/zone.routes";
+import specieRoutes from "./routes/specie.routes";
 
 // Initializations
 const app = express();
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 app.use(authRoutes);
 app.use(specialRoutes);
 app.use(zoneRoutes);
+app.use(specieRoutes);
 
 export default app;
 
