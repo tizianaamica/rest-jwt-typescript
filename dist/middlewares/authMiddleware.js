@@ -42,10 +42,25 @@ const authMiddleware = (req, res, next) => {
         const decodedToken = decoded;
         req.userId = decodedToken.userId;
         req.email = decodedToken.email;
-        if (req.email != "admin@mail.com") {
-            return res.status(403).json({ message: "Unauthorized" });
+        if (req.email === "admin@mail.com") {
+            next();
         }
-        next();
+        else {
+            // Si no es un administrador, verifica si la ruta actual está permitida
+            const authorizedRoutes = [
+                "/view/zones",
+                "/view/species",
+                "/view/animals",
+                "/comment",
+                "/:commentId/reply",
+            ];
+            if (authorizedRoutes.includes(req.path)) {
+                next();
+            }
+            else {
+                return res.status(403).json({ message: "Unauthorized" });
+            }
+        }
     });
 };
 exports.authMiddleware = authMiddleware;

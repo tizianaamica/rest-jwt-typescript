@@ -9,7 +9,7 @@ import {
 const router = Router();
 
 router.post("/zone", createZone);
-router.get("/zone", getZones);
+router.get("/view/zones", getZones);
 router.put("/zone/:id", updateZone);
 router.delete("/zone/:id", deleteZone);
 

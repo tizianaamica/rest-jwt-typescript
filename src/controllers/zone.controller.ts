@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Zone, { IZone } from "../models/zone";
+import Animal from "../models/animal";
 
 export const createZone = async (
   req: Request,

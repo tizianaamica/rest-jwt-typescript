@@ -27,10 +27,22 @@ export const authMiddleware = (
     req.userId = decodedToken.userId;
     req.email = decodedToken.email;
 
-    if (req.email != "admin@mail.com") {
-      return res.status(403).json({ message: "Unauthorized" });
+    if (req.email === "admin@mail.com") {
+      next();
+    } else {
+      // Si no es un administrador, verifica si la ruta actual está permitida
+      const authorizedRoutes = [
+        "/view/zones",
+        "/view/species",
+        "/view/animals",
+        "/comment",
+        "/:commentId/reply",
+      ];
+      if (authorizedRoutes.includes(req.path)) {
+        next();
+      } else {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
     }
-
-    next();
   });
 };
