@@ -12,6 +12,7 @@ const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const special_routes_1 = __importDefault(require("./routes/special.routes"));
 const zone_routes_1 = __importDefault(require("./routes/zone.routes"));
 const specie_routes_1 = __importDefault(require("./routes/specie.routes"));
+const animal_routes_1 = __importDefault(require("./routes/animal.routes"));
 // Initializations
 const app = (0, express_1.default)();
 // Settings
@@ -30,6 +31,7 @@ app.use(auth_routes_1.default);
 app.use(special_routes_1.default);
 app.use(zone_routes_1.default);
 app.use(specie_routes_1.default);
+app.use(animal_routes_1.default);
 exports.default = app;
 // Middleware para proteger rutas
 exports.requireAdmin = passport_1.default.authenticate("jwt", { session: false });
