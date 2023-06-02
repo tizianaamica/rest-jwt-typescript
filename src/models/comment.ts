@@ -1,13 +1,13 @@
-import { model, Schema, Document } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
-interface IComment extends Document {
+export interface IComment extends Document {
   body: string;
   author: string;
   date: Date;
   replies: IComment[];
 }
 
-const commentSchema = new Schema<IComment>({
+const commentSchema: Schema<IComment> = new Schema<IComment>({
   body: {
     type: String,
     required: true,
@@ -20,10 +20,14 @@ const commentSchema = new Schema<IComment>({
     type: Date,
     default: Date.now,
   },
-  replies: {
-    type: [Schema.Types.DocumentArray],
-    default: [],
-  },
+  replies: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
 });
 
-export default model<IComment>("Comment", commentSchema);
+const CommentModel = model<IComment>("Comment", commentSchema);
+
+export default CommentModel;

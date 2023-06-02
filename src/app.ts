@@ -8,6 +8,7 @@ import specialRoutes from "./routes/special.routes";
 import zoneRoutes from "./routes/zone.routes";
 import specieRoutes from "./routes/specie.routes";
 import animalRoutes from "./routes/animal.routes";
+import commentsRoutes from "./routes/comment.routes";
 
 // Initializations
 const app = express();
@@ -32,6 +33,7 @@ app.use(specialRoutes);
 app.use(zoneRoutes);
 app.use(specieRoutes);
 app.use(animalRoutes);
+app.use(commentsRoutes);
 
 export default app;
 
