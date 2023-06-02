@@ -25,13 +25,23 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.body.email || !req.body.password) {
         return res.status(400).json({ msg: "Please send your email and password" });
     }
-    const user = yield user_1.default.findOne({ email: req.body.email });
-    if (user) {
-        return res.status(400).json({ msg: "The user already exists" });
+    try {
+        const user = yield user_1.default.findOne({ email: req.body.email });
+        if (user) {
+            return res.status(400).json({ msg: "Cannot create user" });
+        }
+        const newUser = new user_1.default({
+            email: req.body.email,
+            password: req.body.password,
+            isAdmin: false,
+        });
+        const savedUser = yield newUser.save();
+        return res.status(201).json(savedUser);
     }
-    const newUser = new user_1.default(req.body);
-    yield newUser.save();
-    return res.status(201).json(newUser);
+    catch (error) {
+        console.error("Error creating user:", error);
+        return res.status(500).json({ msg: "Error creating user" });
+    }
 });
 exports.signUp = signUp;
 const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,8 +56,10 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (isMatch) {
         return res.status(200).json({ token: createToken(user) });
     }
-    return res.status(400).json({
-        msg: "The email or password are incorrect",
-    });
+    else {
+        return res.status(400).json({
+            msg: "The password is incorrect",
+        });
+    }
 });
 exports.signIn = signIn;

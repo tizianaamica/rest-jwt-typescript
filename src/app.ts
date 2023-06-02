@@ -30,3 +30,6 @@ app.use(authRoutes);
 app.use(specialRoutes);
 
 export default app;
+
+// Middleware para proteger rutas
+export const requireAdmin = passport.authenticate("jwt", { session: false });

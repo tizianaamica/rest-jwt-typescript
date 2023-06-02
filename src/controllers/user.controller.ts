@@ -17,14 +17,23 @@ export const signUp = async (
     return res.status(400).json({ msg: "Please send your email and password" });
   }
 
-  const user = await User.findOne({ email: req.body.email });
-  if (user) {
-    return res.status(400).json({ msg: "The user already exists" });
-  }
-  const newUser = new User(req.body);
-  await newUser.save();
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      return res.status(400).json({ msg: "Cannot create user" });
+    }
 
-  return res.status(201).json(newUser);
+    const newUser: IUser = new User({
+      email: req.body.email,
+      password: req.body.password,
+      isAdmin: false,
+    });
+    const savedUser = await newUser.save();
+    return res.status(201).json(savedUser);
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return res.status(500).json({ msg: "Error creating user" });
+  }
 };
 
 export const signIn = async (req: Request, res: Response) => {
@@ -40,9 +49,9 @@ export const signIn = async (req: Request, res: Response) => {
   const isMatch = await user.comparePassword(req.body.password);
   if (isMatch) {
     return res.status(200).json({ token: createToken(user) });
+  } else {
+    return res.status(400).json({
+      msg: "The password is incorrect",
+    });
   }
-
-  return res.status(400).json({
-    msg: "The email or password are incorrect",
-  });
 };

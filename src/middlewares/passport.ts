@@ -10,11 +10,13 @@ const opts: StrategyOptions = {
 export default new Strategy(opts, async (payload, done) => {
   try {
     const user = await User.findById(payload.id);
-    if (user) {
+    if (user && user.isAdmin) {
+      // Verifica si el usuario es admin
       return done(null, user);
     }
     return done(null, false);
   } catch (error) {
     console.error(error);
+    return done(error, false);
   }
 });

@@ -22,12 +22,14 @@ const opts = {
 exports.default = new passport_jwt_1.Strategy(opts, (payload, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield user_1.default.findById(payload.id);
-        if (user) {
+        if (user && user.isAdmin) {
+            // Verifica si el usuario es admin
             return done(null, user);
         }
         return done(null, false);
     }
     catch (error) {
         console.error(error);
+        return done(error, false);
     }
 }));

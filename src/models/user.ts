@@ -1,9 +1,10 @@
 import { model, Schema, Document } from "mongoose";
-import bcryp from "bcrypt";
+import bcrypt from "bcrypt";
 
 export interface IUser extends Document {
   email: string;
   password: string;
+  isAdmin: boolean;
   comparePassword: (password: string) => Promise<boolean>;
 }
 
@@ -19,13 +20,17 @@ const userSchema = new Schema({
     type: String,
     require: true,
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 userSchema.pre<IUser>("save", async function (next) {
   const user = this;
   if (!user.isModified("password")) return next();
-  const salt = await bcryp.genSalt(10);
-  const hash = await bcryp.hash(user.password, salt);
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(user.password, salt);
   user.password = hash;
   next();
 });
@@ -33,7 +38,7 @@ userSchema.pre<IUser>("save", async function (next) {
 userSchema.methods.comparePassword = async function (
   password: string
 ): Promise<boolean> {
-  return await bcryp.compare(password, this.password);
+  return await bcrypt.compare(password, this.password);
 };
 
 export default model<IUser>("User", userSchema);

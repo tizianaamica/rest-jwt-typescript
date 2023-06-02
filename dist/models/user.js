@@ -26,6 +26,10 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         require: true,
     },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+    },
 });
 userSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {

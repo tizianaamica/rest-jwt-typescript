@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.requireAdmin = void 0;
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
@@ -28,3 +29,5 @@ app.get("/", (req, res) => {
 app.use(auth_routes_1.default);
 app.use(special_routes_1.default);
 exports.default = app;
+// Middleware para proteger rutas
+exports.requireAdmin = passport_1.default.authenticate("jwt", { session: false });
