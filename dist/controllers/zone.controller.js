@@ -14,9 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteZone = exports.updateZone = exports.getZones = exports.createZone = void 0;
 const zone_1 = __importDefault(require("../models/zone"));
+const animal_1 = __importDefault(require("../models/animal"));
 const createZone = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name } = req.body;
+        const existingZone = yield zone_1.default.findOne({ name });
+        if (existingZone) {
+            return res.status(400).json({ message: "Zone already exists" });
+        }
         const zone = new zone_1.default({ name });
         const newZone = yield zone.save();
         res.status(201).json(newZone);
@@ -51,11 +56,22 @@ exports.updateZone = updateZone;
 const deleteZone = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        yield zone_1.default.findByIdAndDelete(id);
-        res.status(200).json({ message: "Zone deleted successfully" });
+        const animalsInZone = yield animal_1.default.find({ zone: id });
+        if (animalsInZone.length > 0) {
+            return res
+                .status(400)
+                .json({ message: "Zone has associated animals and cannot be deleted" });
+        }
+        const deletedZone = yield zone_1.default.findByIdAndDelete(id);
+        if (deletedZone) {
+            res.json({ message: "Zone deleted", deletedZone });
+        }
+        else {
+            res.status(404).json({ message: "Zone not found" });
+        }
     }
     catch (error) {
-        res.status(500).json({ error: "Error deleting zone" });
+        res.status(500).json({ message: "Error deleting zone", error });
     }
 });
 exports.deleteZone = deleteZone;

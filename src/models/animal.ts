@@ -15,6 +15,11 @@ const animalSchema = new Schema({
     ref: "Specie",
     required: true,
   },
+  zone: {
+    type: Schema.Types.ObjectId,
+    ref: "Zone",
+    required: true,
+  },
 });
 
 export default model<IAnimal>("Animal", animalSchema);

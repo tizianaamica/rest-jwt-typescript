@@ -5,9 +5,13 @@ import Animal from "../models/animal";
 export const createZone = async (
   req: Request,
   res: Response
-): Promise<void> => {
+): Promise<Response<any, Record<string, any>> | undefined> => {
   try {
     const { name } = req.body;
+    const existingZone = await Zone.findOne({ name });
+    if (existingZone) {
+      return res.status(400).json({ message: "Zone already exists" });
+    }
     const zone: IZone = new Zone({ name });
     const newZone: IZone = await zone.save();
     res.status(201).json(newZone);
@@ -43,15 +47,24 @@ export const updateZone = async (
   }
 };
 
-export const deleteZone = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const deleteZone = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await Zone.findByIdAndDelete(id);
-    res.status(200).json({ message: "Zone deleted successfully" });
+    const animalsInZone = await Animal.find({ zone: id });
+
+    if (animalsInZone.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "Zone has associated animals and cannot be deleted" });
+    }
+
+    const deletedZone: IZone | null = await Zone.findByIdAndDelete(id);
+    if (deletedZone) {
+      res.json({ message: "Zone deleted", deletedZone });
+    } else {
+      res.status(404).json({ message: "Zone not found" });
+    }
   } catch (error) {
-    res.status(500).json({ error: "Error deleting zone" });
+    res.status(500).json({ message: "Error deleting zone", error });
   }
 };

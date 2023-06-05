@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import Animal, { IAnimal } from "../models/animal";
 import Specie from "../models/specie";
+import Zone, { IZone } from "../models/zone";
 
 export const createAnimal = async (req: Request, res: Response) => {
+  console.log("Specie name:", req.body.species);
   try {
     const specie = await Specie.findOne({ name: req.body.species });
 
@@ -13,6 +15,7 @@ export const createAnimal = async (req: Request, res: Response) => {
     const newAnimal = new Animal({
       name: req.body.name,
       species: specie._id,
+      zone: req.body.zone,
     });
 
     const savedAnimal = await newAnimal.save();

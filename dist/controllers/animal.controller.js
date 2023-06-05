@@ -16,6 +16,7 @@ exports.deleteAnimal = exports.updateAnimal = exports.getAnimals = exports.creat
 const animal_1 = __importDefault(require("../models/animal"));
 const specie_1 = __importDefault(require("../models/specie"));
 const createAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Specie name:", req.body.species);
     try {
         const specie = yield specie_1.default.findOne({ name: req.body.species });
         if (!specie) {
@@ -24,6 +25,7 @@ const createAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const newAnimal = new animal_1.default({
             name: req.body.name,
             species: specie._id,
+            zone: req.body.zone,
         });
         const savedAnimal = yield newAnimal.save();
         res.json(savedAnimal);

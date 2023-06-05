@@ -4,9 +4,13 @@ import Specie, { ISpecie } from "../models/specie";
 export const createSpecie = async (
   req: Request,
   res: Response
-): Promise<void> => {
+): Promise<Response<any, Record<string, any>> | undefined> => {
   try {
     const { name } = req.body;
+    const existingSpecie = await Specie.findOne({ name });
+    if (existingSpecie) {
+      return res.status(400).json({ message: "Specie already exists" });
+    }
     const specie: ISpecie = new Specie({ name });
     const newSpecie: ISpecie = await specie.save();
     res.status(201).json(newSpecie);

@@ -17,6 +17,10 @@ const specie_1 = __importDefault(require("../models/specie"));
 const createSpecie = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name } = req.body;
+        const existingSpecie = yield specie_1.default.findOne({ name });
+        if (existingSpecie) {
+            return res.status(400).json({ message: "Specie already exists" });
+        }
         const specie = new specie_1.default({ name });
         const newSpecie = yield specie.save();
         res.status(201).json(newSpecie);

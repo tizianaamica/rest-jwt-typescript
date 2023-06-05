@@ -11,5 +11,10 @@ const animalSchema = new mongoose_1.Schema({
         ref: "Specie",
         required: true,
     },
+    zone: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Zone",
+        required: true,
+    },
 });
 exports.default = (0, mongoose_1.model)("Animal", animalSchema);
