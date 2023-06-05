@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAnimalCountBySpecies = exports.getAnimalCountByZone = exports.deleteAnimal = exports.updateAnimal = exports.getAnimals = exports.createAnimal = void 0;
+exports.getAnimalsByRegistrationDate = exports.getAnimalCountBySpecies = exports.getAnimalCountByZone = exports.deleteAnimal = exports.updateAnimal = exports.getAnimals = exports.createAnimal = void 0;
 const animal_1 = __importDefault(require("../models/animal"));
 const specie_1 = __importDefault(require("../models/specie"));
 const comment_1 = __importDefault(require("../models/comment"));
@@ -142,3 +142,27 @@ const getAnimalCountBySpecies = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.getAnimalCountBySpecies = getAnimalCountBySpecies;
+const getAnimalsByRegistrationDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+        const animals = yield animal_1.default.find({
+            registrationDate: {
+                $gte: startOfDay,
+                $lt: endOfDay,
+            },
+        })
+            .populate("species", "name")
+            .populate("zone", "name");
+        res.json(animals);
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Error retrieving animals by registration date",
+            error,
+        });
+    }
+});
+exports.getAnimalsByRegistrationDate = getAnimalsByRegistrationDate;

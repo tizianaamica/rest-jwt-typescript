@@ -20,6 +20,10 @@ const animalSchema = new Schema({
     ref: "Zone",
     required: true,
   },
+  registrationDate: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export default model<IAnimal>("Animal", animalSchema);

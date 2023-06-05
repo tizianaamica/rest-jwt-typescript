@@ -130,3 +130,32 @@ export const getAnimalCountBySpecies = async (req: Request, res: Response) => {
       .json({ message: "Error retrieving animal count by species", error });
   }
 };
+
+export const getAnimalsByRegistrationDate = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const animals = await Animal.find({
+      registrationDate: {
+        $gte: startOfDay,
+        $lt: endOfDay,
+      },
+    })
+      .populate("species", "name")
+      .populate("zone", "name");
+
+    res.json(animals);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving animals by registration date",
+      error,
+    });
+  }
+};

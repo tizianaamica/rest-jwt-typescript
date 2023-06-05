@@ -16,5 +16,9 @@ const animalSchema = new mongoose_1.Schema({
         ref: "Zone",
         required: true,
     },
+    registrationDate: {
+        type: Date,
+        default: Date.now,
+    },
 });
 exports.default = (0, mongoose_1.model)("Animal", animalSchema);

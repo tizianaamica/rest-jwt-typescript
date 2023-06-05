@@ -6,6 +6,7 @@ import {
   deleteAnimal,
   getAnimalCountByZone,
   getAnimalCountBySpecies,
+  getAnimalsByRegistrationDate,
 } from "../controllers/animal.controller";
 import { authMiddleware } from "../middlewares/authMiddleware";
 
@@ -17,5 +18,10 @@ router.put("/animal/:id", updateAnimal);
 router.delete("/animal/:id", deleteAnimal);
 router.get("/animals/:zone", authMiddleware, getAnimalCountByZone);
 router.get("/animal/species", authMiddleware, getAnimalCountBySpecies);
+router.get(
+  "/animals/registration/:date",
+  authMiddleware,
+  getAnimalsByRegistrationDate
+);
 
 export default router;
