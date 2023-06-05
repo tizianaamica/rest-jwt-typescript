@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Specie, { ISpecie } from "../models/specie";
+import Animal from "../models/animal";
 
 export const createSpecie = async (
   req: Request,
@@ -49,12 +50,16 @@ export const updateSpecie = async (
   }
 };
 
-export const deleteSpecie = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const deleteSpecie = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const animalsExist = await Animal.find({ species: id });
+
+    if (animalsExist.length > 0) {
+      return res.status(400).json({
+        message: "Specie has associated animals and cannot be deleted",
+      });
+    }
     await Specie.findByIdAndDelete(id);
     res.status(200).json({ message: "Specie deleted successfully" });
   } catch (error) {

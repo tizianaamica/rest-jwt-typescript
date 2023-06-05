@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import Animal, { IAnimal } from "../models/animal";
 import Specie from "../models/specie";
-import Zone, { IZone } from "../models/zone";
+import Comment, { IComment } from "../models/comment";
+import Reply from "../models/reply";
 
 export const createAnimal = async (req: Request, res: Response) => {
   console.log("Specie name:", req.body.species);
@@ -57,8 +58,14 @@ export const deleteAnimal = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const deletedAnimal: IAnimal | null = await Animal.findByIdAndDelete(id);
+
     if (deletedAnimal) {
-      res.json({ message: "Animal deleted", deletedAnimal });
+      await Comment.deleteMany({ animal: deletedAnimal._id });
+      const comments = await Comment.find({ animal: deletedAnimal._id });
+      const commentIds = comments.map((comment) => comment._id);
+      await Reply.deleteMany({ comment: { $in: commentIds } });
+
+      res.json({ message: "Animal and comments deleted", deletedAnimal });
     } else {
       res.status(404).json({ message: "Animal not found" });
     }

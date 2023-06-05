@@ -5,6 +5,7 @@ export interface IComment extends Document {
   author: string;
   date: Date;
   replies: IComment[];
+  animal: Schema.Types.ObjectId;
 }
 
 const commentSchema: Schema<IComment> = new Schema<IComment>({
@@ -26,6 +27,11 @@ const commentSchema: Schema<IComment> = new Schema<IComment>({
       ref: "Comment",
     },
   ],
+  animal: {
+    type: Schema.Types.ObjectId,
+    ref: "Animal",
+    required: true,
+  },
 });
 
 const CommentModel = model<IComment>("Comment", commentSchema);

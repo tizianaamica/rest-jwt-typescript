@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAnimal = exports.updateAnimal = exports.getAnimals = exports.createAnimal = void 0;
 const animal_1 = __importDefault(require("../models/animal"));
 const specie_1 = __importDefault(require("../models/specie"));
+const comment_1 = __importDefault(require("../models/comment"));
+const reply_1 = __importDefault(require("../models/reply"));
 const createAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Specie name:", req.body.species);
     try {
@@ -67,7 +69,11 @@ const deleteAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { id } = req.params;
         const deletedAnimal = yield animal_1.default.findByIdAndDelete(id);
         if (deletedAnimal) {
-            res.json({ message: "Animal deleted", deletedAnimal });
+            yield comment_1.default.deleteMany({ animal: deletedAnimal._id });
+            const comments = yield comment_1.default.find({ animal: deletedAnimal._id });
+            const commentIds = comments.map((comment) => comment._id);
+            yield reply_1.default.deleteMany({ comment: { $in: commentIds } });
+            res.json({ message: "Animal and comments deleted", deletedAnimal });
         }
         else {
             res.status(404).json({ message: "Animal not found" });

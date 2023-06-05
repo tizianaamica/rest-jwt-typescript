@@ -12,14 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addReply = exports.createComment = void 0;
+exports.getComments = exports.addReply = exports.createComment = void 0;
 const comment_1 = __importDefault(require("../models/comment"));
+const animal_1 = __importDefault(require("../models/animal"));
 const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { body, author } = req.body;
+        const { body, author, animalId } = req.body;
+        const animal = yield animal_1.default.findById(animalId);
+        if (!animal) {
+            return res.status(404).json({ message: "Animal not found" });
+        }
         const newComment = new comment_1.default({
             body,
             author,
+            animal: animal._id,
             date: new Date(),
             replies: [],
         });
@@ -54,3 +60,13 @@ const addReply = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.addReply = addReply;
+const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const comments = yield comment_1.default.find();
+        res.status(200).json(comments);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error retrieving comments", error });
+    }
+});
+exports.getComments = getComments;

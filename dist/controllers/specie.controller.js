@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteSpecie = exports.updateSpecie = exports.getSpecies = exports.createSpecie = void 0;
 const specie_1 = __importDefault(require("../models/specie"));
+const animal_1 = __importDefault(require("../models/animal"));
 const createSpecie = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name } = req.body;
@@ -55,6 +56,12 @@ exports.updateSpecie = updateSpecie;
 const deleteSpecie = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
+        const animalsExist = yield animal_1.default.find({ species: id });
+        if (animalsExist.length > 0) {
+            return res.status(400).json({
+                message: "Specie has associated animals and cannot be deleted",
+            });
+        }
         yield specie_1.default.findByIdAndDelete(id);
         res.status(200).json({ message: "Specie deleted successfully" });
     }

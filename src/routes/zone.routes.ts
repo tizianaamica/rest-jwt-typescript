@@ -8,7 +8,7 @@ import {
 
 const router = Router();
 
-router.post("/create/zone", createZone);
+router.post("/zone", createZone);
 router.get("/view/zones", getZones);
 router.put("/zone/:id", updateZone);
 router.delete("/zone/:id", deleteZone);

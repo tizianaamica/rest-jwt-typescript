@@ -5,7 +5,7 @@ const animal_controller_1 = require("../controllers/animal.controller");
 const authMiddleware_1 = require("../middlewares/authMiddleware");
 const router = (0, express_1.Router)();
 router.get("/view/animals", authMiddleware_1.authMiddleware, animal_controller_1.getAnimals);
-router.post("/create/animal", animal_controller_1.createAnimal);
+router.post("/animal", animal_controller_1.createAnimal);
 router.put("/animal/:id", animal_controller_1.updateAnimal);
 router.delete("/animal/:id", animal_controller_1.deleteAnimal);
 exports.default = router;

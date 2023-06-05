@@ -10,7 +10,7 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 const router = Router();
 
 router.get("/view/animals", authMiddleware, getAnimals);
-router.post("/create/animal", createAnimal);
+router.post("/animal", createAnimal);
 router.put("/animal/:id", updateAnimal);
 router.delete("/animal/:id", deleteAnimal);
 
