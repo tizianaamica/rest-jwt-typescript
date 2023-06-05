@@ -73,3 +73,35 @@ export const deleteAnimal = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error deleting animal", error });
   }
 };
+
+export const getAnimalCountByZone = async (req: Request, res: Response) => {
+  try {
+    const zoneId = req.params.zoneId;
+
+    const animalCountByZone = await Animal.aggregate([
+      {
+        $match: {
+          zone: zoneId,
+        },
+      },
+      {
+        $group: {
+          _id: "$zone",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          zone: "$_id",
+          count: 1,
+        },
+      },
+    ]);
+    res.json(animalCountByZone);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving animal count by zone", error });
+  }
+};
