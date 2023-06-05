@@ -6,4 +6,5 @@ const router = (0, express_1.Router)();
 router.post("/comment", comment_controller_1.createComment);
 router.post("/:commentId/reply", comment_controller_1.addReply);
 router.get("/comments", comment_controller_1.getComments);
+router.get("/comment/percentage", comment_controller_1.getResponsePercentage);
 exports.default = router;

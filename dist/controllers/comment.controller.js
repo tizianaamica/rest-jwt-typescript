@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getComments = exports.addReply = exports.createComment = void 0;
+exports.getResponsePercentage = exports.getComments = exports.addReply = exports.createComment = void 0;
 const comment_1 = __importDefault(require("../models/comment"));
 const animal_1 = __importDefault(require("../models/animal"));
 const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,3 +70,19 @@ const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getComments = getComments;
+const getResponsePercentage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const totalComments = yield comment_1.default.countDocuments();
+        const commentsWithReplies = yield comment_1.default.countDocuments({
+            replies: { $exists: true, $not: { $size: 0 } },
+        });
+        const responsePercentage = (commentsWithReplies / totalComments) * 100;
+        res.json({ responsePercentage });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Error retrieving response percentage", error });
+    }
+});
+exports.getResponsePercentage = getResponsePercentage;

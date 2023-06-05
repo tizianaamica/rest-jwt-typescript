@@ -61,3 +61,19 @@ export const getComments = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error retrieving comments", error });
   }
 };
+
+export const getResponsePercentage = async (req: Request, res: Response) => {
+  try {
+    const totalComments = await CommentModel.countDocuments();
+    const commentsWithReplies = await CommentModel.countDocuments({
+      replies: { $exists: true, $not: { $size: 0 } },
+    });
+
+    const responsePercentage = (commentsWithReplies / totalComments) * 100;
+    res.json({ responsePercentage });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving response percentage", error });
+  }
+};
