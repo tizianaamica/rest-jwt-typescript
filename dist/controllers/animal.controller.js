@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAnimalCountByZone = exports.deleteAnimal = exports.updateAnimal = exports.getAnimals = exports.createAnimal = void 0;
+exports.getAnimalCountBySpecies = exports.getAnimalCountByZone = exports.deleteAnimal = exports.updateAnimal = exports.getAnimals = exports.createAnimal = void 0;
 const animal_1 = __importDefault(require("../models/animal"));
 const specie_1 = __importDefault(require("../models/specie"));
 const comment_1 = __importDefault(require("../models/comment"));
@@ -116,3 +116,29 @@ const getAnimalCountByZone = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getAnimalCountByZone = getAnimalCountByZone;
+const getAnimalCountBySpecies = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const animalCountBySpecies = yield animal_1.default.aggregate([
+            {
+                $group: {
+                    _id: "$species",
+                    count: { $sum: 1 },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    species: "$_id",
+                    count: 1, // Incluye el campo count en el resultado
+                },
+            },
+        ]);
+        res.json(animalCountBySpecies);
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Error retrieving animal count by species", error });
+    }
+});
+exports.getAnimalCountBySpecies = getAnimalCountBySpecies;

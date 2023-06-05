@@ -105,3 +105,28 @@ export const getAnimalCountByZone = async (req: Request, res: Response) => {
       .json({ message: "Error retrieving animal count by zone", error });
   }
 };
+
+export const getAnimalCountBySpecies = async (req: Request, res: Response) => {
+  try {
+    const animalCountBySpecies = await Animal.aggregate([
+      {
+        $group: {
+          _id: "$species",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0, // Excluye el campo _id del resultado
+          species: "$_id", // Renombra el campo _id a species
+          count: 1, // Incluye el campo count en el resultado
+        },
+      },
+    ]);
+    res.json(animalCountBySpecies);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving animal count by species", error });
+  }
+};
