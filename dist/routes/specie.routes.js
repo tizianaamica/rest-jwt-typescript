@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const specie_controller_1 = require("../controllers/specie.controller");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
 const router = (0, express_1.Router)();
-router.post("/specie", specie_controller_1.createSpecie);
-router.get("/view/species", specie_controller_1.getSpecies);
-router.put("/specie/:id", specie_controller_1.updateSpecie);
-router.delete("/specie/:id", specie_controller_1.deleteSpecie);
+router.post("/specie", authMiddleware_1.authMiddleware, specie_controller_1.createSpecie);
+router.get("/view/species", authMiddleware_1.authMiddleware, specie_controller_1.getSpecies);
+router.put("/specie/:id", authMiddleware_1.authMiddleware, specie_controller_1.updateSpecie);
+router.delete("/specie/:id", authMiddleware_1.authMiddleware, specie_controller_1.deleteSpecie);
 exports.default = router;

@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const search_controller_1 = require("../controllers/search.controller");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
 const router = express_1.default.Router();
-router.get("/search", search_controller_1.search);
+router.get("/search", authMiddleware_1.authMiddleware, search_controller_1.search);
 exports.default = router;

@@ -26,7 +26,7 @@ const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             name: { $regex: keyword, $options: "i" },
         });
         if (zones.length > 0) {
-            searchResults.push({ category: "Zonas", results: zones });
+            searchResults.push({ category: "Zones", results: zones });
         }
         const animals = yield animal_1.default.find({
             $or: [
@@ -41,7 +41,7 @@ const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             ],
         });
         if (animals.length > 0) {
-            searchResults.push({ category: "Animales", results: animals });
+            searchResults.push({ category: "Animals", results: animals });
         }
         const comments = yield comment_1.default.find({
             body: { $regex: keyword, $options: "i" },
@@ -52,7 +52,7 @@ const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (comments.length > 0 || replies.length > 0) {
             const combinedResults = [...comments, ...replies];
             searchResults.push({
-                category: "Comentarios y Respuestas",
+                category: "Comments and Replays",
                 results: combinedResults,
             });
         }

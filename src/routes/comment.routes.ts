@@ -5,12 +5,13 @@ import {
   getComments,
   getResponsePercentage,
 } from "../controllers/comment.controller";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.post("/comment", createComment);
-router.post("/:commentId/reply", addReply);
-router.get("/comments", getComments);
-router.get("/comment/percentage", getResponsePercentage);
+router.post("/comment", authMiddleware, createComment);
+router.post("/:commentId/reply", authMiddleware, addReply);
+router.get("/comments", authMiddleware, getComments);
+router.get("/comment/percentage", authMiddleware, getResponsePercentage);
 
 export default router;

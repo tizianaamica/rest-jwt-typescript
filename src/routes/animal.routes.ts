@@ -13,9 +13,9 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 const router = Router();
 
 router.get("/view/animals", authMiddleware, getAnimals);
-router.post("/animal", createAnimal);
-router.put("/animal/:id", updateAnimal);
-router.delete("/animal/:id", deleteAnimal);
+router.post("/animal", authMiddleware, createAnimal);
+router.put("/animal/:id", authMiddleware, updateAnimal);
+router.delete("/animal/:id", authMiddleware, deleteAnimal);
 router.get("/animals/:zoneId", authMiddleware, getAnimalCountByZone);
 router.get("/animal/species", authMiddleware, getAnimalCountBySpecies);
 router.get(

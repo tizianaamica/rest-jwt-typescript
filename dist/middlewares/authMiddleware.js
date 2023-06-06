@@ -46,12 +46,13 @@ const authMiddleware = (req, res, next) => {
             next();
         }
         else {
-            // Si no es un administrador, verifica si la ruta actual está permitida
+            // If not admin, only routes acces
             const authorizedRoutes = [
                 "/view/zones",
                 "/view/species",
                 "/view/animals",
                 "/comment",
+                "/comments",
                 "/:commentId/reply",
             ];
             if (authorizedRoutes.includes(req.path)) {

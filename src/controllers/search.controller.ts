@@ -14,7 +14,7 @@ export const search = async (req: Request, res: Response) => {
       name: { $regex: keyword, $options: "i" },
     });
     if (zones.length > 0) {
-      searchResults.push({ category: "Zonas", results: zones });
+      searchResults.push({ category: "Zones", results: zones });
     }
     const animals = await Animal.find({
       $or: [
@@ -30,7 +30,7 @@ export const search = async (req: Request, res: Response) => {
     });
 
     if (animals.length > 0) {
-      searchResults.push({ category: "Animales", results: animals });
+      searchResults.push({ category: "Animals", results: animals });
     }
 
     const comments = await Comment.find({
@@ -43,7 +43,7 @@ export const search = async (req: Request, res: Response) => {
     if (comments.length > 0 || replies.length > 0) {
       const combinedResults = [...comments, ...replies];
       searchResults.push({
-        category: "Comentarios y Respuestas",
+        category: "Comments and Replays",
         results: combinedResults,
       });
     }

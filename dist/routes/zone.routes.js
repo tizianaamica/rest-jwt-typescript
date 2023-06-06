@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const zone_controller_1 = require("../controllers/zone.controller");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
 const router = (0, express_1.Router)();
-router.post("/zone", zone_controller_1.createZone);
-router.get("/view/zones", zone_controller_1.getZones);
-router.put("/zone/:id", zone_controller_1.updateZone);
-router.delete("/zone/:id", zone_controller_1.deleteZone);
+router.post("/zone", authMiddleware_1.authMiddleware, zone_controller_1.createZone);
+router.get("/view/zones", authMiddleware_1.authMiddleware, zone_controller_1.getZones);
+router.put("/zone/:id", authMiddleware_1.authMiddleware, zone_controller_1.updateZone);
+router.delete("/zone/:id", authMiddleware_1.authMiddleware, zone_controller_1.deleteZone);
 exports.default = router;

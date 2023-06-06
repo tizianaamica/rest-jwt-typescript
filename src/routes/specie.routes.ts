@@ -5,12 +5,13 @@ import {
   updateSpecie,
   deleteSpecie,
 } from "../controllers/specie.controller";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.post("/specie", createSpecie);
-router.get("/view/species", getSpecies);
-router.put("/specie/:id", updateSpecie);
-router.delete("/specie/:id", deleteSpecie);
+router.post("/specie", authMiddleware, createSpecie);
+router.get("/view/species", authMiddleware, getSpecies);
+router.put("/specie/:id", authMiddleware, updateSpecie);
+router.delete("/specie/:id", authMiddleware, deleteSpecie);
 
 export default router;
