@@ -7,5 +7,6 @@ const router = (0, express_1.Router)();
 router.post("/comment", authMiddleware_1.authMiddleware, comment_controller_1.createComment);
 router.post("/:commentId/reply", authMiddleware_1.authMiddleware, comment_controller_1.addReply);
 router.get("/comments", authMiddleware_1.authMiddleware, comment_controller_1.getComments);
+router.get("/replys/:commentId", authMiddleware_1.authMiddleware, comment_controller_1.getRepliesByCommentId);
 router.get("/comment/percentage", authMiddleware_1.authMiddleware, comment_controller_1.getResponsePercentage);
 exports.default = router;

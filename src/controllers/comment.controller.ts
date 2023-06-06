@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import CommentModel, { IComment } from "../models/comment";
+import Comment, { IComment } from "../models/comment";
 import Animal from "../models/animal";
+import Reply from "../models/reply";
 
 export const createComment = async (req: Request, res: Response) => {
   try {
@@ -10,7 +11,7 @@ export const createComment = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Animal not found" });
     }
 
-    const newComment = new CommentModel({
+    const newComment = new Comment({
       body,
       author,
       animal: animal._id,
@@ -29,24 +30,22 @@ export const addReply = async (req: Request, res: Response) => {
   try {
     const { commentId } = req.params;
     const { body, author } = req.body;
-
-    const parentComment = await CommentModel.findById(commentId);
+    const parentComment = await Comment.findById(commentId);
 
     if (!parentComment) {
       return res.status(404).json({ message: "Parent comment not found" });
     }
 
-    const newReply = new CommentModel({
+    const newReply = new Reply({
       body,
       author,
       date: new Date(),
-      replies: [],
+      comment: parentComment._id,
     });
 
-    parentComment.replies.push(newReply);
-
+    const savedReply = await newReply.save();
+    parentComment.replies.push(savedReply._id);
     const savedParentComment = await parentComment.save();
-
     res.json(savedParentComment.toObject());
   } catch (error) {
     res.status(500).json({ message: "Error adding reply", error });
@@ -55,17 +54,28 @@ export const addReply = async (req: Request, res: Response) => {
 
 export const getComments = async (req: Request, res: Response) => {
   try {
-    const comments: IComment[] = await CommentModel.find();
+    const comments: IComment[] = await Comment.find();
     res.status(200).json(comments);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving comments", error });
   }
 };
 
+export const getRepliesByCommentId = async (req: Request, res: Response) => {
+  try {
+    const { commentId } = req.params;
+    const replies = await Reply.find({ comment: commentId });
+
+    res.json(replies);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving replies", error });
+  }
+};
+
 export const getResponsePercentage = async (req: Request, res: Response) => {
   try {
-    const totalComments = await CommentModel.countDocuments();
-    const commentsWithReplies = await CommentModel.countDocuments({
+    const totalComments = await Comment.countDocuments();
+    const commentsWithReplies = await Comment.countDocuments({
       replies: { $exists: true, $not: { $size: 0 } },
     });
 

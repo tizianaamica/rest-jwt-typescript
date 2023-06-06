@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getResponsePercentage = exports.getComments = exports.addReply = exports.createComment = void 0;
+exports.getResponsePercentage = exports.getRepliesByCommentId = exports.getComments = exports.addReply = exports.createComment = void 0;
 const comment_1 = __importDefault(require("../models/comment"));
 const animal_1 = __importDefault(require("../models/animal"));
+const reply_1 = __importDefault(require("../models/reply"));
 const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { body, author, animalId } = req.body;
@@ -45,13 +46,14 @@ const addReply = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!parentComment) {
             return res.status(404).json({ message: "Parent comment not found" });
         }
-        const newReply = new comment_1.default({
+        const newReply = new reply_1.default({
             body,
             author,
             date: new Date(),
-            replies: [],
+            comment: parentComment._id,
         });
-        parentComment.replies.push(newReply);
+        const savedReply = yield newReply.save();
+        parentComment.replies.push(savedReply._id);
         const savedParentComment = yield parentComment.save();
         res.json(savedParentComment.toObject());
     }
@@ -70,6 +72,17 @@ const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getComments = getComments;
+const getRepliesByCommentId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { commentId } = req.params;
+        const replies = yield reply_1.default.find({ comment: commentId });
+        res.json(replies);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error retrieving replies", error });
+    }
+});
+exports.getRepliesByCommentId = getRepliesByCommentId;
 const getResponsePercentage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const totalComments = yield comment_1.default.countDocuments();
