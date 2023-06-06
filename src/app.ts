@@ -9,6 +9,7 @@ import zoneRoutes from "./routes/zone.routes";
 import specieRoutes from "./routes/specie.routes";
 import animalRoutes from "./routes/animal.routes";
 import commentsRoutes from "./routes/comment.routes";
+import searchRoutes from "./routes/search.routes";
 
 // Initializations
 const app = express();
@@ -34,6 +35,7 @@ app.use(zoneRoutes);
 app.use(specieRoutes);
 app.use(animalRoutes);
 app.use(commentsRoutes);
+app.use(searchRoutes);
 
 export default app;
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Animal, { IAnimal } from "../models/animal";
 import Specie from "../models/specie";
-import Comment, { IComment } from "../models/comment";
+import Comment from "../models/comment";
 import Reply from "../models/reply";
 
 export const createAnimal = async (req: Request, res: Response) => {
@@ -117,9 +117,9 @@ export const getAnimalCountBySpecies = async (req: Request, res: Response) => {
       },
       {
         $project: {
-          _id: 0, // Excluye el campo _id del resultado
-          species: "$_id", // Renombra el campo _id a species
-          count: 1, // Incluye el campo count en el resultado
+          _id: 0,
+          species: "$_id",
+          count: 1,
         },
       },
     ]);

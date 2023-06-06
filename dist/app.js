@@ -14,6 +14,7 @@ const zone_routes_1 = __importDefault(require("./routes/zone.routes"));
 const specie_routes_1 = __importDefault(require("./routes/specie.routes"));
 const animal_routes_1 = __importDefault(require("./routes/animal.routes"));
 const comment_routes_1 = __importDefault(require("./routes/comment.routes"));
+const search_routes_1 = __importDefault(require("./routes/search.routes"));
 // Initializations
 const app = (0, express_1.default)();
 // Settings
@@ -34,6 +35,7 @@ app.use(zone_routes_1.default);
 app.use(specie_routes_1.default);
 app.use(animal_routes_1.default);
 app.use(comment_routes_1.default);
+app.use(search_routes_1.default);
 exports.default = app;
 // Middleware para proteger rutas
 exports.requireAdmin = passport_1.default.authenticate("jwt", { session: false });

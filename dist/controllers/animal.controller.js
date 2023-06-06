@@ -129,7 +129,7 @@ const getAnimalCountBySpecies = (req, res) => __awaiter(void 0, void 0, void 0, 
                 $project: {
                     _id: 0,
                     species: "$_id",
-                    count: 1, // Incluye el campo count en el resultado
+                    count: 1,
                 },
             },
         ]);
