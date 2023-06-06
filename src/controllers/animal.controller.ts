@@ -77,28 +77,9 @@ export const deleteAnimal = async (req: Request, res: Response) => {
 export const getAnimalCountByZone = async (req: Request, res: Response) => {
   try {
     const zoneId = req.params.zoneId;
+    const animalCountByZone = await Animal.countDocuments({ zone: zoneId });
 
-    const animalCountByZone = await Animal.aggregate([
-      {
-        $match: {
-          zone: zoneId,
-        },
-      },
-      {
-        $group: {
-          _id: "$zone",
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          zone: "$_id",
-          count: 1,
-        },
-      },
-    ]);
-    res.json(animalCountByZone);
+    res.json({ count: animalCountByZone });
   } catch (error) {
     res
       .status(500)
@@ -136,11 +117,11 @@ export const getAnimalsByRegistrationDate = async (
   res: Response
 ) => {
   try {
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
+    const dateStr = req.params.date;
+    const [year, month, day] = dateStr.split("-").map(Number);
 
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
+    const startOfDay = new Date(year, month - 1, day, 0, 0, 0, 0);
+    const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999);
 
     const animals = await Animal.find({
       registrationDate: {

@@ -8,7 +8,7 @@ router.get("/view/animals", authMiddleware_1.authMiddleware, animal_controller_1
 router.post("/animal", animal_controller_1.createAnimal);
 router.put("/animal/:id", animal_controller_1.updateAnimal);
 router.delete("/animal/:id", animal_controller_1.deleteAnimal);
-router.get("/animals/:zone", authMiddleware_1.authMiddleware, animal_controller_1.getAnimalCountByZone);
+router.get("/animals/:zoneId", authMiddleware_1.authMiddleware, animal_controller_1.getAnimalCountByZone);
 router.get("/animal/species", authMiddleware_1.authMiddleware, animal_controller_1.getAnimalCountBySpecies);
 router.get("/animals/registration/:date", authMiddleware_1.authMiddleware, animal_controller_1.getAnimalsByRegistrationDate);
 exports.default = router;

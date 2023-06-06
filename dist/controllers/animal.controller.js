@@ -87,27 +87,8 @@ exports.deleteAnimal = deleteAnimal;
 const getAnimalCountByZone = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const zoneId = req.params.zoneId;
-        const animalCountByZone = yield animal_1.default.aggregate([
-            {
-                $match: {
-                    zone: zoneId,
-                },
-            },
-            {
-                $group: {
-                    _id: "$zone",
-                    count: { $sum: 1 },
-                },
-            },
-            {
-                $project: {
-                    _id: 0,
-                    zone: "$_id",
-                    count: 1,
-                },
-            },
-        ]);
-        res.json(animalCountByZone);
+        const animalCountByZone = yield animal_1.default.countDocuments({ zone: zoneId });
+        res.json({ count: animalCountByZone });
     }
     catch (error) {
         res
@@ -144,10 +125,10 @@ const getAnimalCountBySpecies = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.getAnimalCountBySpecies = getAnimalCountBySpecies;
 const getAnimalsByRegistrationDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const startOfDay = new Date();
-        startOfDay.setHours(0, 0, 0, 0);
-        const endOfDay = new Date();
-        endOfDay.setHours(23, 59, 59, 999);
+        const dateStr = req.params.date;
+        const [year, month, day] = dateStr.split("-").map(Number);
+        const startOfDay = new Date(year, month - 1, day, 0, 0, 0, 0);
+        const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999);
         const animals = yield animal_1.default.find({
             registrationDate: {
                 $gte: startOfDay,
