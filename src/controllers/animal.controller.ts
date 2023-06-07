@@ -5,7 +5,6 @@ import Comment from "../models/comment";
 import Reply from "../models/reply";
 
 export const createAnimal = async (req: Request, res: Response) => {
-  console.log("Specie name:", req.body.species);
   try {
     const specie = await Specie.findOne({ name: req.body.species });
 

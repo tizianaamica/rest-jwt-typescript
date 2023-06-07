@@ -18,7 +18,6 @@ const specie_1 = __importDefault(require("../models/specie"));
 const comment_1 = __importDefault(require("../models/comment"));
 const reply_1 = __importDefault(require("../models/reply"));
 const createAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Specie name:", req.body.species);
     try {
         const specie = yield specie_1.default.findOne({ name: req.body.species });
         if (!specie) {
