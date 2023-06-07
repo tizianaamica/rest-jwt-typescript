@@ -29,10 +29,12 @@ const createAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             zone: req.body.zone,
         });
         const savedAnimal = yield newAnimal.save();
-        res.json(savedAnimal);
+        res.status(201).json(savedAnimal);
     }
     catch (error) {
-        res.status(500).json({ message: "Error creating animal", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.createAnimal = createAnimal;
@@ -42,7 +44,9 @@ const getAnimals = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(200).json(zones);
     }
     catch (error) {
-        res.status(500).json({ message: "Error retrieving animal", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.getAnimals = getAnimals;
@@ -52,14 +56,16 @@ const updateAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { name, species } = req.body;
         const updatedAnimal = yield animal_1.default.findByIdAndUpdate(id, { name, species }, { new: true });
         if (updatedAnimal) {
-            res.json(updatedAnimal);
+            res.status(200).json(updatedAnimal);
         }
         else {
             res.status(404).json({ message: "Animal not found" });
         }
     }
     catch (error) {
-        res.status(500).json({ message: "Error updating animal", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.updateAnimal = updateAnimal;
@@ -79,7 +85,9 @@ const deleteAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
     }
     catch (error) {
-        res.status(500).json({ message: "Error deleting animal", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.deleteAnimal = deleteAnimal;
@@ -90,9 +98,9 @@ const getAnimalCountByZone = (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.json({ count: animalCountByZone });
     }
     catch (error) {
-        res
-            .status(500)
-            .json({ message: "Error retrieving animal count by zone", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.getAnimalCountByZone = getAnimalCountByZone;
@@ -116,9 +124,9 @@ const getAnimalCountBySpecies = (req, res) => __awaiter(void 0, void 0, void 0, 
         res.json(animalCountBySpecies);
     }
     catch (error) {
-        res
-            .status(500)
-            .json({ message: "Error retrieving animal count by species", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.getAnimalCountBySpecies = getAnimalCountBySpecies;
@@ -139,10 +147,9 @@ const getAnimalsByRegistrationDate = (req, res) => __awaiter(void 0, void 0, voi
         res.json(animals);
     }
     catch (error) {
-        res.status(500).json({
-            message: "Error retrieving animals by registration date",
-            error,
-        });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.getAnimalsByRegistrationDate = getAnimalsByRegistrationDate;

@@ -32,7 +32,7 @@ export const signUp = async (
     return res.status(201).json(savedUser);
   } catch (error) {
     console.error("Error creating user:", error);
-    return res.status(500).json({ msg: "Error creating user" });
+    return res.status(400).json({ msg: "Error creating user" });
   }
 };
 
@@ -50,7 +50,7 @@ export const signIn = async (req: Request, res: Response) => {
   if (isMatch) {
     return res.status(200).json({ token: createToken(user) });
   } else {
-    return res.status(400).json({
+    return res.status(403).json({
       msg: "The password is incorrect",
     });
   }

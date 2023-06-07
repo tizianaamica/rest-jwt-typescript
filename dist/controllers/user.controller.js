@@ -40,7 +40,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         console.error("Error creating user:", error);
-        return res.status(500).json({ msg: "Error creating user" });
+        return res.status(400).json({ msg: "Error creating user" });
     }
 });
 exports.signUp = signUp;
@@ -57,7 +57,7 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(200).json({ token: createToken(user) });
     }
     else {
-        return res.status(400).json({
+        return res.status(403).json({
             msg: "The password is incorrect",
         });
     }

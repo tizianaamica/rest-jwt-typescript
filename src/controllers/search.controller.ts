@@ -16,6 +16,7 @@ export const search = async (req: Request, res: Response) => {
     if (zones.length > 0) {
       searchResults.push({ category: "Zones", results: zones });
     }
+
     const animals = await Animal.find({
       $or: [
         { name: { $regex: new RegExp(keyword, "i") } },
@@ -47,9 +48,10 @@ export const search = async (req: Request, res: Response) => {
         results: combinedResults,
       });
     }
-
     res.json(searchResults);
   } catch (error) {
-    res.status(500).json({ message: "Error searching", error });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };

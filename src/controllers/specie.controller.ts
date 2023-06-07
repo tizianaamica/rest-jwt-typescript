@@ -16,26 +16,30 @@ export const createSpecie = async (
     const newSpecie: ISpecie = await specie.save();
     res.status(201).json(newSpecie);
   } catch (error) {
-    res.status(500).json({ error: "Error creating specie" });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
 
 export const getSpecies = async (
   req: Request,
   res: Response
-): Promise<void> => {
+): Promise<Response<any, Record<string, any>> | undefined> => {
   try {
     const zones: ISpecie[] = await Specie.find();
     res.status(200).json(zones);
   } catch (error) {
-    res.status(500).json({ error: "Error retrieving zones" });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
 
 export const updateSpecie = async (
   req: Request,
   res: Response
-): Promise<void> => {
+): Promise<Response<any, Record<string, any>> | undefined> => {
   try {
     const { id } = req.params;
     const { name } = req.body;
@@ -44,9 +48,14 @@ export const updateSpecie = async (
       { name },
       { new: true }
     );
+    if (!updatedSpecie) {
+      return res.status(404).json({ error: "Specie not found" });
+    }
     res.status(200).json(updatedSpecie);
   } catch (error) {
-    res.status(500).json({ error: "Error updating specie" });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
 
@@ -61,8 +70,10 @@ export const deleteSpecie = async (req: Request, res: Response) => {
       });
     }
     await Specie.findByIdAndDelete(id);
-    res.status(200).json({ message: "Specie deleted successfully" });
+    res.status(204).json({ message: "Specie deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Error deleting specie" });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };

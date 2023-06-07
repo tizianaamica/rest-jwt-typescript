@@ -59,7 +59,9 @@ const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.json(searchResults);
     }
     catch (error) {
-        res.status(500).json({ message: "Error searching", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.search = search;

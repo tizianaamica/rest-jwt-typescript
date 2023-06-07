@@ -34,7 +34,9 @@ const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(201).json(savedComment.toObject());
     }
     catch (error) {
-        res.status(500).json({ message: "Error creating comment", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.createComment = createComment;
@@ -55,10 +57,12 @@ const addReply = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const savedReply = yield newReply.save();
         parentComment.replies.push(savedReply._id);
         const savedParentComment = yield parentComment.save();
-        res.json(savedParentComment.toObject());
+        res.status(200).json(savedParentComment.toObject());
     }
     catch (error) {
-        res.status(500).json({ message: "Error adding reply", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.addReply = addReply;
@@ -68,7 +72,9 @@ const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(200).json(comments);
     }
     catch (error) {
-        res.status(500).json({ message: "Error retrieving comments", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.getComments = getComments;
@@ -76,10 +82,12 @@ const getRepliesByCommentId = (req, res) => __awaiter(void 0, void 0, void 0, fu
     try {
         const { commentId } = req.params;
         const replies = yield reply_1.default.find({ comment: commentId });
-        res.json(replies);
+        res.status(200).json(replies);
     }
     catch (error) {
-        res.status(500).json({ message: "Error retrieving replies", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.getRepliesByCommentId = getRepliesByCommentId;
@@ -93,9 +101,9 @@ const getResponsePercentage = (req, res) => __awaiter(void 0, void 0, void 0, fu
         res.json({ responsePercentage });
     }
     catch (error) {
-        res
-            .status(500)
-            .json({ message: "Error retrieving response percentage", error });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.getResponsePercentage = getResponsePercentage;

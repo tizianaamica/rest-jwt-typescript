@@ -16,7 +16,9 @@ export const createZone = async (
     const newZone: IZone = await zone.save();
     res.status(201).json(newZone);
   } catch (error) {
-    res.status(500).json({ error: "Error creating zone" });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
 
@@ -25,14 +27,14 @@ export const getZones = async (req: Request, res: Response): Promise<void> => {
     const zones: IZone[] = await Zone.find();
     res.status(200).json(zones);
   } catch (error) {
-    res.status(500).json({ error: "Error retrieving zones" });
+    res.status(400).json({ error: "Error retrieving zones" });
   }
 };
 
 export const updateZone = async (
   req: Request,
   res: Response
-): Promise<void> => {
+): Promise<Response<any, Record<string, any>> | undefined> => {
   try {
     const { id } = req.params;
     const { name } = req.body;
@@ -41,9 +43,14 @@ export const updateZone = async (
       { name },
       { new: true }
     );
+    if (!updatedZone) {
+      return res.status(404).json({ error: "Zone not found" });
+    }
     res.status(200).json(updatedZone);
   } catch (error) {
-    res.status(500).json({ error: "Error updating zone" });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
 
@@ -60,11 +67,11 @@ export const deleteZone = async (req: Request, res: Response) => {
 
     const deletedZone: IZone | null = await Zone.findByIdAndDelete(id);
     if (deletedZone) {
-      res.json({ message: "Zone deleted", deletedZone });
+      res.status(204).json({ message: "Zone deleted", deletedZone });
     } else {
       res.status(404).json({ message: "Zone not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Error deleting zone", error });
+    res.status(400).json({ message: "Error deleting zone", error });
   }
 };

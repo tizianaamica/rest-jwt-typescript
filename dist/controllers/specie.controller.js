@@ -27,7 +27,9 @@ const createSpecie = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(201).json(newSpecie);
     }
     catch (error) {
-        res.status(500).json({ error: "Error creating specie" });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.createSpecie = createSpecie;
@@ -37,7 +39,9 @@ const getSpecies = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(200).json(zones);
     }
     catch (error) {
-        res.status(500).json({ error: "Error retrieving zones" });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.getSpecies = getSpecies;
@@ -46,10 +50,15 @@ const updateSpecie = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { id } = req.params;
         const { name } = req.body;
         const updatedSpecie = yield specie_1.default.findByIdAndUpdate(id, { name }, { new: true });
+        if (!updatedSpecie) {
+            return res.status(404).json({ error: "Specie not found" });
+        }
         res.status(200).json(updatedSpecie);
     }
     catch (error) {
-        res.status(500).json({ error: "Error updating specie" });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.updateSpecie = updateSpecie;
@@ -63,10 +72,12 @@ const deleteSpecie = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
         }
         yield specie_1.default.findByIdAndDelete(id);
-        res.status(200).json({ message: "Specie deleted successfully" });
+        res.status(204).json({ message: "Specie deleted successfully" });
     }
     catch (error) {
-        res.status(500).json({ error: "Error deleting specie" });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.deleteSpecie = deleteSpecie;

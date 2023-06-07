@@ -27,7 +27,9 @@ const createZone = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(201).json(newZone);
     }
     catch (error) {
-        res.status(500).json({ error: "Error creating zone" });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.createZone = createZone;
@@ -37,7 +39,7 @@ const getZones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json(zones);
     }
     catch (error) {
-        res.status(500).json({ error: "Error retrieving zones" });
+        res.status(400).json({ error: "Error retrieving zones" });
     }
 });
 exports.getZones = getZones;
@@ -46,10 +48,15 @@ const updateZone = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { id } = req.params;
         const { name } = req.body;
         const updatedZone = yield zone_1.default.findByIdAndUpdate(id, { name }, { new: true });
+        if (!updatedZone) {
+            return res.status(404).json({ error: "Zone not found" });
+        }
         res.status(200).json(updatedZone);
     }
     catch (error) {
-        res.status(500).json({ error: "Error updating zone" });
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
     }
 });
 exports.updateZone = updateZone;
@@ -64,14 +71,14 @@ const deleteZone = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         const deletedZone = yield zone_1.default.findByIdAndDelete(id);
         if (deletedZone) {
-            res.json({ message: "Zone deleted", deletedZone });
+            res.status(204).json({ message: "Zone deleted", deletedZone });
         }
         else {
             res.status(404).json({ message: "Zone not found" });
         }
     }
     catch (error) {
-        res.status(500).json({ message: "Error deleting zone", error });
+        res.status(400).json({ message: "Error deleting zone", error });
     }
 });
 exports.deleteZone = deleteZone;

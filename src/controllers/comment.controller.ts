@@ -22,7 +22,9 @@ export const createComment = async (req: Request, res: Response) => {
     const savedComment = await newComment.save();
     res.status(201).json(savedComment.toObject());
   } catch (error) {
-    res.status(500).json({ message: "Error creating comment", error });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
 
@@ -46,9 +48,11 @@ export const addReply = async (req: Request, res: Response) => {
     const savedReply = await newReply.save();
     parentComment.replies.push(savedReply._id);
     const savedParentComment = await parentComment.save();
-    res.json(savedParentComment.toObject());
+    res.status(200).json(savedParentComment.toObject());
   } catch (error) {
-    res.status(500).json({ message: "Error adding reply", error });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
 
@@ -57,7 +61,9 @@ export const getComments = async (req: Request, res: Response) => {
     const comments: IComment[] = await Comment.find();
     res.status(200).json(comments);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving comments", error });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
 
@@ -65,10 +71,11 @@ export const getRepliesByCommentId = async (req: Request, res: Response) => {
   try {
     const { commentId } = req.params;
     const replies = await Reply.find({ comment: commentId });
-
-    res.json(replies);
+    res.status(200).json(replies);
   } catch (error) {
-    res.status(500).json({ message: "Error retrieving replies", error });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
 
@@ -82,8 +89,8 @@ export const getResponsePercentage = async (req: Request, res: Response) => {
     const responsePercentage = (commentsWithReplies / totalComments) * 100;
     res.json({ responsePercentage });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving response percentage", error });
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
   }
 };
