@@ -60,7 +60,7 @@ const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: "Error searching", error });
         }
     }
 });

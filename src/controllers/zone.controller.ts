@@ -17,7 +17,7 @@ export const createZone = async (
     res.status(201).json(newZone);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error creating zone", error });
     }
   }
 };
@@ -27,7 +27,7 @@ export const getZones = async (req: Request, res: Response): Promise<void> => {
     const zones: IZone[] = await Zone.find();
     res.status(200).json(zones);
   } catch (error) {
-    res.status(400).json({ error: "Error retrieving zones" });
+    res.status(400).json({ message: "Error retrieving zones", error });
   }
 };
 
@@ -49,7 +49,7 @@ export const updateZone = async (
     res.status(200).json(updatedZone);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error updating zone", error });
     }
   }
 };

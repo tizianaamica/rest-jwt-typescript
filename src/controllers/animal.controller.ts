@@ -22,7 +22,7 @@ export const createAnimal = async (req: Request, res: Response) => {
     res.status(201).json(savedAnimal);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error creating animal", error });
     }
   }
 };
@@ -33,7 +33,9 @@ export const getAnimals = async (req: Request, res: Response) => {
     res.status(200).json(zones);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res
+        .status(400)
+        .json({ message: "Error retrieving animal", error });
     }
   }
 };
@@ -41,10 +43,10 @@ export const getAnimals = async (req: Request, res: Response) => {
 export const updateAnimal = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, species } = req.body;
+    const { name, species, zone } = req.body;
     const updatedAnimal: IAnimal | null = await Animal.findByIdAndUpdate(
       id,
-      { name, species },
+      { name, species, zone },
       { new: true }
     );
     if (updatedAnimal) {
@@ -54,7 +56,7 @@ export const updateAnimal = async (req: Request, res: Response) => {
     }
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error updating animal", error });
     }
   }
 };
@@ -70,13 +72,15 @@ export const deleteAnimal = async (req: Request, res: Response) => {
       const commentIds = comments.map((comment) => comment._id);
       await Reply.deleteMany({ comment: { $in: commentIds } });
 
-      res.json({ message: "Animal and comments deleted", deletedAnimal });
+      res
+        .status(200)
+        .json({ message: "Animal and comments deleted", deletedAnimal });
     } else {
       res.status(404).json({ message: "Animal not found" });
     }
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error deleting animal", error });
     }
   }
 };
@@ -89,7 +93,9 @@ export const getAnimalCountByZone = async (req: Request, res: Response) => {
     res.json({ count: animalCountByZone });
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res
+        .status(400)
+        .json({ message: "Error retrieving animal count by zone", error });
     }
   }
 };
@@ -114,7 +120,9 @@ export const getAnimalCountBySpecies = async (req: Request, res: Response) => {
     res.json(animalCountBySpecies);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res
+        .status(400)
+        .json({ message: "Error retrieving animal count by species", error });
     }
   }
 };
@@ -142,7 +150,10 @@ export const getAnimalsByRegistrationDate = async (
     res.json(animals);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({
+        message: "Error retrieving animals by registration date",
+        error,
+      });
     }
   }
 };

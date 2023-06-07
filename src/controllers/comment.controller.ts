@@ -23,7 +23,7 @@ export const createComment = async (req: Request, res: Response) => {
     res.status(201).json(savedComment.toObject());
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error creating comment", error });
     }
   }
 };
@@ -51,7 +51,7 @@ export const addReply = async (req: Request, res: Response) => {
     res.status(200).json(savedParentComment.toObject());
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error adding reply", error });
     }
   }
 };
@@ -62,7 +62,9 @@ export const getComments = async (req: Request, res: Response) => {
     res.status(200).json(comments);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res
+        .status(400)
+        .json({ message: "Error retrieving replies", error });
     }
   }
 };
@@ -74,7 +76,9 @@ export const getRepliesByCommentId = async (req: Request, res: Response) => {
     res.status(200).json(replies);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res
+        .status(400)
+        .json({ message: "Error retrieving replies", error });
     }
   }
 };
@@ -90,7 +94,9 @@ export const getResponsePercentage = async (req: Request, res: Response) => {
     res.json({ responsePercentage });
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res
+        .status(400)
+        .json({ message: "Error retrieving replies", error });
     }
   }
 };

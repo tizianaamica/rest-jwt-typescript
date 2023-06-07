@@ -35,7 +35,7 @@ const createComment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: "Error creating comment", error });
         }
     }
 });
@@ -61,7 +61,7 @@ const addReply = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: "Error adding reply", error });
         }
     }
 });
@@ -73,7 +73,9 @@ const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res
+                .status(400)
+                .json({ message: "Error retrieving replies", error });
         }
     }
 });
@@ -86,7 +88,9 @@ const getRepliesByCommentId = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res
+                .status(400)
+                .json({ message: "Error retrieving replies", error });
         }
     }
 });
@@ -102,7 +106,9 @@ const getResponsePercentage = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res
+                .status(400)
+                .json({ message: "Error retrieving replies", error });
         }
     }
 });

@@ -33,7 +33,7 @@ const createAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: "Error creating animal", error });
         }
     }
 });
@@ -45,7 +45,9 @@ const getAnimals = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res
+                .status(400)
+                .json({ message: "Error retrieving animal", error });
         }
     }
 });
@@ -53,8 +55,8 @@ exports.getAnimals = getAnimals;
 const updateAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { name, species } = req.body;
-        const updatedAnimal = yield animal_1.default.findByIdAndUpdate(id, { name, species }, { new: true });
+        const { name, species, zone } = req.body;
+        const updatedAnimal = yield animal_1.default.findByIdAndUpdate(id, { name, species, zone }, { new: true });
         if (updatedAnimal) {
             res.status(200).json(updatedAnimal);
         }
@@ -64,7 +66,7 @@ const updateAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: "Error updating animal", error });
         }
     }
 });
@@ -78,7 +80,9 @@ const deleteAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             const comments = yield comment_1.default.find({ animal: deletedAnimal._id });
             const commentIds = comments.map((comment) => comment._id);
             yield reply_1.default.deleteMany({ comment: { $in: commentIds } });
-            res.json({ message: "Animal and comments deleted", deletedAnimal });
+            res
+                .status(200)
+                .json({ message: "Animal and comments deleted", deletedAnimal });
         }
         else {
             res.status(404).json({ message: "Animal not found" });
@@ -86,7 +90,7 @@ const deleteAnimal = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: "Error deleting animal", error });
         }
     }
 });
@@ -99,7 +103,9 @@ const getAnimalCountByZone = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res
+                .status(400)
+                .json({ message: "Error retrieving animal count by zone", error });
         }
     }
 });
@@ -125,7 +131,9 @@ const getAnimalCountBySpecies = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res
+                .status(400)
+                .json({ message: "Error retrieving animal count by species", error });
         }
     }
 });
@@ -148,7 +156,10 @@ const getAnimalsByRegistrationDate = (req, res) => __awaiter(void 0, void 0, voi
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({
+                message: "Error retrieving animals by registration date",
+                error,
+            });
         }
     }
 });

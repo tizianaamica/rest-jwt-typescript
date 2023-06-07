@@ -51,7 +51,7 @@ export const search = async (req: Request, res: Response) => {
     res.json(searchResults);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error searching", error });
     }
   }
 };

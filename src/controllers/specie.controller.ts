@@ -17,7 +17,7 @@ export const createSpecie = async (
     res.status(201).json(newSpecie);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ error: "Error creating specie" });
     }
   }
 };
@@ -31,7 +31,7 @@ export const getSpecies = async (
     res.status(200).json(zones);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error retrieving zones", error });
     }
   }
 };
@@ -54,7 +54,7 @@ export const updateSpecie = async (
     res.status(200).json(updatedSpecie);
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error updating specie", error });
     }
   }
 };
@@ -73,7 +73,7 @@ export const deleteSpecie = async (req: Request, res: Response) => {
     res.status(204).json({ message: "Specie deleted successfully" });
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: "Error deleting specie", error });
     }
   }
 };

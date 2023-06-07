@@ -28,7 +28,7 @@ const createZone = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: "Error creating zone", error });
         }
     }
 });
@@ -39,7 +39,7 @@ const getZones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json(zones);
     }
     catch (error) {
-        res.status(400).json({ error: "Error retrieving zones" });
+        res.status(400).json({ message: "Error retrieving zones", error });
     }
 });
 exports.getZones = getZones;
@@ -55,7 +55,7 @@ const updateZone = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: "Error updating zone", error });
         }
     }
 });
