@@ -24,8 +24,12 @@ router.post(
   authMiddleware,
   addReply
 );
-router.get("/comments", authMiddleware, getComments);
-router.get("/replys/:commentId", authMiddleware, getRepliesByCommentId);
+router.get("/comment", authMiddleware, getComments);
+router.get(
+  "/comment/:commentId/replies",
+  authMiddleware,
+  getRepliesByCommentId
+);
 router.get("/comment/percentage", authMiddleware, getResponsePercentage);
 
 export default router;

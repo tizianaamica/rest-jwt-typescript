@@ -12,7 +12,7 @@ import { bodyValidate } from "../utils/validatations";
 const router = Router();
 
 router.post("/specie", validation(bodyValidate), authMiddleware, createSpecie);
-router.get("/view/species", authMiddleware, getSpecies);
+router.get("/specie", authMiddleware, getSpecies);
 router.put(
   "/specie/:id",
   validation(bodyValidate),

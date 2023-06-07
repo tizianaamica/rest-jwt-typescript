@@ -12,7 +12,7 @@ import { bodyValidate } from "../utils/validatations";
 const router = Router();
 
 router.post("/zone", validation(bodyValidate), authMiddleware, createZone);
-router.get("/view/zones", authMiddleware, getZones);
+router.get("/zone", authMiddleware, getZones);
 router.put("/zone/:id", authMiddleware, updateZone);
 router.delete("/zone/:id", authMiddleware, deleteZone);
 

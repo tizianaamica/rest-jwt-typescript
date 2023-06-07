@@ -14,7 +14,7 @@ import { animalValidate } from "../utils/validatations";
 
 const router = Router();
 
-router.get("/view/animals", authMiddleware, getAnimals);
+router.get("/animals", authMiddleware, getAnimals);
 router.post(
   "/animal",
   validation(animalValidate),

@@ -7,7 +7,7 @@ const validationMiddlewares_1 = require("../middlewares/validationMiddlewares");
 const validatations_1 = require("../utils/validatations");
 const router = (0, express_1.Router)();
 router.post("/specie", (0, validationMiddlewares_1.validation)(validatations_1.bodyValidate), authMiddleware_1.authMiddleware, specie_controller_1.createSpecie);
-router.get("/view/species", authMiddleware_1.authMiddleware, specie_controller_1.getSpecies);
+router.get("/specie", authMiddleware_1.authMiddleware, specie_controller_1.getSpecies);
 router.put("/specie/:id", (0, validationMiddlewares_1.validation)(validatations_1.bodyValidate), authMiddleware_1.authMiddleware, specie_controller_1.updateSpecie);
 router.delete("/specie/:id", authMiddleware_1.authMiddleware, specie_controller_1.deleteSpecie);
 exports.default = router;

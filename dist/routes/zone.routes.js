@@ -7,7 +7,7 @@ const validationMiddlewares_1 = require("../middlewares/validationMiddlewares");
 const validatations_1 = require("../utils/validatations");
 const router = (0, express_1.Router)();
 router.post("/zone", (0, validationMiddlewares_1.validation)(validatations_1.bodyValidate), authMiddleware_1.authMiddleware, zone_controller_1.createZone);
-router.get("/view/zones", authMiddleware_1.authMiddleware, zone_controller_1.getZones);
+router.get("/zone", authMiddleware_1.authMiddleware, zone_controller_1.getZones);
 router.put("/zone/:id", authMiddleware_1.authMiddleware, zone_controller_1.updateZone);
 router.delete("/zone/:id", authMiddleware_1.authMiddleware, zone_controller_1.deleteZone);
 exports.default = router;
