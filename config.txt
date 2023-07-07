@@ -1,0 +1,5 @@
+Version de node
+v14.17.6
+
+Iniciar la app
+npm run dev
