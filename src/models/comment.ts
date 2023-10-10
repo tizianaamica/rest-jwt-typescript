@@ -1,11 +1,12 @@
-import { Schema, model, Document } from "mongoose";
-
+import { Schema, model, Document, Types } from "mongoose";
+import { IReply } from "./reply";
 export interface IComment extends Document {
   body: string;
   author: string;
   date: Date;
-  replies: IComment[];
+  replies: IReply[];
   animal: Schema.Types.ObjectId;
+  resuelto: boolean; // Campo para indicar si el comentario está resuelto
 }
 
 const commentSchema: Schema<IComment> = new Schema<IComment>({
@@ -32,8 +33,10 @@ const commentSchema: Schema<IComment> = new Schema<IComment>({
     ref: "Animal",
     required: true,
   },
+  resuelto: {
+    type: Boolean,
+    default: false, // Valor predeterminado: No resuelto
+  },
 });
 
-const CommentModel = model<IComment>("Comment", commentSchema);
-
-export default CommentModel;
+export default model<IComment>("Comment", commentSchema);

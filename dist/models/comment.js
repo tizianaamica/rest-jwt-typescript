@@ -25,6 +25,9 @@ const commentSchema = new mongoose_1.Schema({
         ref: "Animal",
         required: true,
     },
+    resuelto: {
+        type: Boolean,
+        default: false, // Valor predeterminado: No resuelto
+    },
 });
-const CommentModel = (0, mongoose_1.model)("Comment", commentSchema);
-exports.default = CommentModel;
+exports.default = (0, mongoose_1.model)("Comment", commentSchema);

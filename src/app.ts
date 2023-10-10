@@ -10,6 +10,7 @@ import specieRoutes from "./routes/specie.routes";
 import animalRoutes from "./routes/animal.routes";
 import commentsRoutes from "./routes/comment.routes";
 import searchRoutes from "./routes/search.routes";
+import reportRoutes from "./routes/report.routes";
 
 // Initializations
 const app = express();
@@ -36,6 +37,7 @@ app.use(specieRoutes);
 app.use(animalRoutes);
 app.use(commentsRoutes);
 app.use(searchRoutes);
+app.use(reportRoutes);
 
 export default app;
 
