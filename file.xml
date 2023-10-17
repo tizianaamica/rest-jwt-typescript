@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<requisition>
+	<localizationNotRequired>true</localizationNotRequired>
+	<acceptanceVideoNotRequired>true</acceptanceVideoNotRequired>
+	<contractName>ContratoBancaP</contractName>
+	<acceptanceLegend>Yo Tiziana Amicarella acepto firmar contratoTest, hoy 10/10/2023.</acceptanceLegend>
+	<acceptanceVideoNotRequired>true</acceptanceVideoNotRequired>
+	<validity>90</validity>
+	<contractType>Contrato</contractType>
+	<useWhatsAppTemplate>false</useWhatsAppTemplate>
+	<certificate>
+		<page>1</page>
+		<positionX1>8.48066</positionX1>
+		<positionX2>88.48066</positionX2>
+		<positionY1>78.4089</positionY1>
+		<positionY2>90.53880000000001</positionY2>
+	</certificate>
+	<signers>
+		<signerName>Tiziana Amicarella</signerName>
+		<mail>tiziana.amicarella@segurossura.com.mx</mail>
+		<phone>+573219588157</phone>
+		<signDevicePhone>+573219588157</signDevicePhone>
+		<authenticationType>Código de seguridad</authenticationType>
+		<authenticationData>8157</authenticationData>
+		<videoSignIsNotRequired>true</videoSignIsNotRequired>
+		<order>1</order>
+		<signatures>
+			<centerX>68.3702</centerX>
+			<centerY>34.4741</centerY>
+			<page>2</page>
+			<positionX1>56.5608</positionX1>
+			<positionX2>80.1796</positionX2>
+			<positionY1>31.6991</positionY1>
+			<positionY2>37.2491</positionY2>
+			<signerType>Firmante</signerType>
+		</signatures>
+		<inePictureFront>false</inePictureFront>
+		<inePictureBack>false</inePictureBack>
+		<compareSelfieProof>false</compareSelfieProof>
+		<urlSignerRedirect>https://uatba.firmaautografa.com</urlSignerRedirect>
+	</signers>
+	<acceptanceVideoNotRequired>true</acceptanceVideoNotRequired>
+	<signOnWeb>true</signOnWeb>
+	<signatureType>SIGNATURE_LITE</signatureType>
+	<isShortPath>false</isShortPath>
+	<shortPad>false</shortPad>
+	<processId>16f33b07-2615-488b-b0a3-7b3ae80aa9ff</processId>
+	<processType>1</processType>
+	<mailResend>
+		<email>tiziana.amicarella@segurossura.com.mx</email>
+		<email>t.amicarella@nelumbo.com.co</email>
+	</mailResend>
+	<extraInfo>
+		<property name="Custom Data 1">Custom Value 1</property>
+	</extraInfo>
+</requisition>
