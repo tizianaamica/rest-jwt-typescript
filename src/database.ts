@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 
 // URL de conexión a la base de datos de MongoDB Atlas
-const mongoUri =
-  "mongodb+srv://tizianaamica:prueba123@cluster0.dfl4ehq.mongodb.net/?retryWrites=true&w=majority";
+const mongoUri = process.env.MONGODB_URI;
 
 // Establece la conexión a la base de datos de MongoDB Atlas
 mongoose.connect(mongoUri, {
