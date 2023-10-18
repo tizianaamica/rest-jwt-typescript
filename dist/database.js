@@ -1,9 +1,8 @@
 "use strict";
 const mongoose = require("mongoose");
-// URL de conexión a la base de datos de MongoDB Atlas
-const mongoUri = "mongodb+srv://tizianaamica:prueba123@cluster0.dfl4ehq.mongodb.net/?retryWrites=true&w=majority";
+require("dotenv").config();
 // Establece la conexión a la base de datos de MongoDB Atlas
-mongoose.connect(mongoUri, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });

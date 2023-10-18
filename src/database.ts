@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
-
-// URL de conexión a la base de datos de MongoDB Atlas
-const mongoUri = process.env.MONGODB_URI;
+require("dotenv").config();
 
 // Establece la conexión a la base de datos de MongoDB Atlas
-mongoose.connect(mongoUri, {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
